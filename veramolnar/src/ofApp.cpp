@@ -4,6 +4,10 @@
 ofColor *colors;
 void ofApp::setup(){
     ofBackground(43, 38, 35);
+    ofNoFill();
+    ofSetLineWidth(3);
+    
+    // Setting the color palette
     colors = new ofColor[7];
     colors[0] = ofColor(180, 28, 43); // Red
     colors[1] = ofColor(135, 53, 127); // Red Purple
@@ -16,62 +20,72 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    // Operations, computer vision
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofNoFill();
-    ofSetLineWidth(2);
-    ofSeedRandom(mouseX * 1000);
-    
     int xpos = 0;
     int ypos = 0;
     int width = 125;
     int height = 125;
     
-    ofSeedRandom(1000);
+    // Setting seed
+    ofSeedRandom(mouseX * 1000);
     
+    // Defining points
     ofPoint v1(xpos, ypos);
     ofPoint v2(xpos + width, ypos);
     ofPoint v3(xpos + width, ypos + height);
     ofPoint v4(xpos, ypos + height);
     
-    ofPoint r1(ofRandom(-10, 10), ofRandom(-10, 10));
-    ofPoint r2(ofRandom(-10, 10), ofRandom(-10, 10));
-    ofPoint r3(ofRandom(-10, 10), ofRandom(-10, 10));
-    ofPoint r4(ofRandom(-10, 10), ofRandom(-10, 10));
-    
-    r1.normalize();
-    r2.normalize();
-    r3.normalize();
-    r4.normalize();
-    
-    r1 *= 20;
-    r2 *= 20;
-    r3 *= 20;
-    r4 *= 20;
-    
+    // Recursing columns
     for (int i = 0; i < 6; i++) {
+        ofPushMatrix();
+        ofTranslate(width, height);
+        
+        // Recursing rows
         for (int k = 0; k < 6; k++) {
         ofPushMatrix();
-        ofTranslate(125 + i*125, 125 + k*125);
+        ofTranslate(i*width, k*height);
+            
+        // Setting color
         int color = ofRandom(0, 7);
         ofSetColor(colors[color]);
             
-        for (int j = 0; j < 5; j++) {
-            int width = ofRandom(100, 150);
-            int height = ofRandom(100, 150);
-
-//            ofPushMatrix();
-            if (ofNoise(j * 0.2, j * 0.2) > .5){
-                ofRotateZDeg(ofRandom(-60, 60));
+            // Drawing overlaid squares
+            for (int j = 0; j < 8; j++) {
+                ofPushMatrix();
+                int lowerBound = -10;
+                int upperBound = 10;
+                
+                ofPoint r1(ofRandom(lowerBound, upperBound), ofRandom(lowerBound, upperBound));
+                ofPoint r2(ofRandom(lowerBound, upperBound), ofRandom(lowerBound, upperBound));
+                ofPoint r3(ofRandom(lowerBound, upperBound), ofRandom(lowerBound, upperBound));
+                ofPoint r4(ofRandom(lowerBound, upperBound), ofRandom(lowerBound, upperBound));
+                
+                r1.normalize();
+                r2.normalize();
+                r3.normalize();
+                r4.normalize();
+                
+                int multiplier = 45;
+                
+                r1 *= multiplier;
+                r2 *= multiplier;
+                r3 *= multiplier;
+                r4 *= multiplier;
+                
+                ofDrawLine(v1 + r1, v2 + r2);
+                ofDrawLine(v2 + r2, v3 + r3);
+                ofDrawLine(v3 + r3, v4 + r4);
+                ofDrawLine(v4 + r4, v1 + r1);
+                
+                ofPopMatrix();
             }
-            ofDrawRectangle(0, 0, width, height);
-//            ofPopMatrix();
+            ofPopMatrix();
         }
         ofPopMatrix();
-        }
         
     }
 }
