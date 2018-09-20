@@ -5,7 +5,7 @@ ofColor *colors;
 void ofApp::setup(){
     ofBackground(43, 38, 35);
     ofNoFill();
-    ofSetLineWidth(3);
+    ofSetLineWidth(3.5);
     
     // Setting the color palette
     colors = new ofColor[7];
@@ -27,35 +27,40 @@ void ofApp::update(){
 void ofApp::draw(){
     int xpos = 0;
     int ypos = 0;
-    int width = 125;
-    int height = 125;
+    int max = 125;
     
     // Setting seed
-    ofSeedRandom(mouseX * 1000);
-    
-    // Defining points
-    ofPoint v1(xpos, ypos);
-    ofPoint v2(xpos + width, ypos);
-    ofPoint v3(xpos + width, ypos + height);
-    ofPoint v4(xpos, ypos + height);
+    ofSeedRandom(18);
     
     // Recursing columns
     for (int i = 0; i < 6; i++) {
         ofPushMatrix();
-        ofTranslate(width, height);
+        ofTranslate(max-40, max-40);
         
         // Recursing rows
         for (int k = 0; k < 6; k++) {
-        ofPushMatrix();
-        ofTranslate(i*width, k*height);
+            int width = 45;
+            int height = 45;
+            ofPushMatrix();
+            ofTranslate(i*max, k*max);
             
-        // Setting color
-        int color = ofRandom(0, 7);
-        ofSetColor(colors[color]);
+            // Setting color
+            int color = ofRandom(0, 7);
+            ofSetColor(colors[color]);
             
             // Drawing overlaid squares
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 7; j++) {
+                width += 10;
+                height += 10;
+                
                 ofPushMatrix();
+                ofTranslate((9-j)*10, (9-j)*10);
+
+                ofPoint v1(xpos, ypos);
+                ofPoint v2(xpos + width, ypos);
+                ofPoint v3(xpos + width, ypos + height);
+                ofPoint v4(xpos, ypos + height);
+                
                 int lowerBound = -10;
                 int upperBound = 10;
                 
@@ -69,7 +74,10 @@ void ofApp::draw(){
                 r3.normalize();
                 r4.normalize();
                 
-                int multiplier = 45;
+                
+//                int multiplier = ofRandom(mouseX - mouseY, mouseX + mouseY);
+                
+                int multiplier = 20;
                 
                 r1 *= multiplier;
                 r2 *= multiplier;
@@ -86,6 +94,7 @@ void ofApp::draw(){
             ofPopMatrix();
         }
         ofPopMatrix();
+        cout << mouseX << endl;
         
     }
 }
