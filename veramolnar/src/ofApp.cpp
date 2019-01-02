@@ -14,8 +14,8 @@ void ofApp::setup(){
     colors[2] = ofColor(145, 196, 251); // Light Blue
     colors[3] = ofColor(255); // White
     colors[4] = ofColor(212, 198, 0); // Yellow
-    colors[5] = ofColor(139, 68, 148); //Green
-    colors[6] = ofColor(94, 173, 50); // Blue Purple
+    colors[5] = ofColor(94, 173, 50); //Green
+    colors[6] = ofColor(104, 101, 155); // Blue Purple
 }
 
 //--------------------------------------------------------------
@@ -30,7 +30,7 @@ void ofApp::draw(){
     int max = 125;
     
     // Setting seed
-    ofSeedRandom(18);
+    ofSeedRandom(mouseX);
     
     // Recursing columns
     for (int i = 0; i < 6; i++) {
